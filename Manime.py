@@ -3,7 +3,7 @@
 #https://youtu.be/oc09fkWZVOQ?si=9u8IOrK_0jahyt9P  adding widget dynamically
 #https://stackoverflow.com/questions/70041675/how-can-get-input-from-mdtextfield-when-i-press-enter 
 import os
-#from plyer import call
+from plyer import call
 import requests
 from bs4 import BeautifulSoup as bs
 from kivymd.app import MDApp
