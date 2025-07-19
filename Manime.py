@@ -3,7 +3,7 @@
 #https://youtu.be/oc09fkWZVOQ?si=9u8IOrK_0jahyt9P  adding widget dynamically
 #https://stackoverflow.com/questions/70041675/how-can-get-input-from-mdtextfield-when-i-press-enter 
 import os
-from plyer import call
+#from plyer import call
 import requests
 from bs4 import BeautifulSoup as bs
 from kivymd.app import MDApp
@@ -75,34 +75,26 @@ KV = """
         MDButton:
             text:"<--"
             on_release:app.root.ids.screen_manager.current = "main_page"
-#<Naver>
-#    id: naver_root # if needed in python 
-#    md_bg_color: self.theme_cls.backgroundColor
-#
-#    MDTopAppBar:
-#        title:"WOLFANIME"
-#       #left_action_items:[["menu",lambda x:nav_drawer.set_state("toggle")]]
-#        elevation: 4
-#        type:"small"
-#        pos_hint:{"top":1}
-#        MDTopAppBarLeadingButtonContainer:
-#            MDActionTopAppBarButton:
-#                icon:"menu"
-#                on_release:app.root.ids.nav_drawer.set_state("toggle")
-#        MDTopAppBarTitle:
-#            text:"WOLFANIME"
-#            halign:"center"
-
-
-
-
-<MainLayout@MDNavigationLayout>:
-    id:nav_layout
+<Naver>
+    id: naver_root # if needed in python 
+    #md_bg_color: self.theme_cls.backgroundColor
     MDTopAppBar:
-        title:"WolfAnime"
-        elevation:4
-        pos_hint:{"top":1}
-        left_action_items:[["menu",lambda x:app.root.ids.nav_drawer.set_state("toggle")]]
+        type: "small"  # or "center-aligned", "medium", etc.
+        pos_hint: {"top": 1}
+
+        MDTopAppBarLeadingButtonContainer:
+            MDActionTopAppBarButton:
+                icon: "menu"
+                on_release: app.root.ids.nav_drawer.set_state("toggle")
+        MDTopAppBarTitle:
+            text:"WOLFANIME"
+            halign:"center"
+
+
+
+
+MainLayout:
+    id:nav_layout
     ScreenManager:
         id:screen_manager
         UrlSearch:
@@ -117,32 +109,36 @@ KV = """
         radius: 0, dp(16), dp(16), 0
 
         MDNavigationDrawerMenu:
-            MDNavigationDrawerHeader:
-                title: "WolfAnime"
-                text: "Menu"
+            #MDNavigationDrawerHeader:
 
-            MDNavigationDrawerLabel:
-                text:"Navigate"
+
+
+            MDNavigationDrawerLabel:    
+                text: "Menu"
 
 
             MDNavigationDrawerItem:
-                icon: "home"
-                text: "search"
-                text_color:"white"
                 on_release:
                     nav_drawer.set_state("close")
                     app.root.ids.screen_manager.current = "SearchPage"
 
+                MDNavigationDrawerItemLeadingIcon:
+                    icon:"magnify"
+                MDNavigationDrawerItemText:
+                    text:"Search"
+            MDNavigationDrawerDivider:
 
             MDNavigationDrawerItem:
-                icon: "information"
-                text: "anime page"
-                text_color:"white"
                 on_release:
                     nav_drawer.set_state("close")
                     app.root.ids.screen_manager.current = "main_page"
 
+                MDNavigationDrawerItemLeadingIcon:
+                    icon: "face-man-shimmer"
+                MDNavigationDrawerItemText:
+                    text:"Anime Page"
 
+            MDNavigationDrawerDivider:
 
 <MyCard>:
     elevation:40
@@ -166,55 +162,43 @@ KV = """
 
 <UrlSearch>:
     id:UrlPage
-    MDScreen:
-        MDTopAppBar:
-            title:"search"
-            elevation:4
-            left_action_items:[["menu",lambda x:app.root.ids.nav_drawer.set_state("toggle")]]
-            pos_hint:{"top":1}
-        MDTextField:
-            id:search
-            mode: "outlined"
-            size_hint_x: None
-            width: "240dp"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            
-            on_text_validate:if len(self.text) > 3: app.on_enter(self)
+    Naver:
+    MDTextField:
+        id:search
+        mode: "outlined"
+        size_hint_x: None
+        width: "240dp"
+        pos_hint: {"center_x": .5, "center_y": .5}
+        
+        on_text_validate:if len(self.text) > 3: app.on_enter(self)
 
-           # MDTextFieldLeadingIcon:
-           #     icon: "account"
+       # MDTextFieldLeadingIcon:
+       #     icon: "account"
 
-            MDTextFieldHintText:
-                text: "search anime"
+        MDTextFieldHintText:
+            text: "search anime"
 
-            MDTextFieldHelperText:
-                text: "search anime by name"
-                mode: "persistent"
+        MDTextFieldHelperText:
+            text: "search anime by name"
+            mode: "persistent"
 
-            MDTextFieldTrailingIcon:
-                icon: "magnify"
+        MDTextFieldTrailingIcon:
+            icon: "magnify"
 
 
 <MainPage>:
     id: main
-    MDScreen:
-        MDTopAppBar:
-            title:"search"
-            elevation:4
-            left_action_items:[["menu",lambda x:app.root.ids.nav_drawer.set_state("toggle")]]
-            pos_hint:{"top":1}
-    #    Naver:
-        ScrollView:
-            pos_hint:{"top":.9}
-            ResponsiveGrid:
-                cols:4
-                id:result_box
-                size_hint_y:None
-                height:self.minimum_height
-                padding:"20dp"
-                spacing:"20dp"
+    Naver:
+    ScrollView:
+        pos_hint:{"top":.9}
+        ResponsiveGrid:
+            cols:4
+            id:result_box
+            size_hint_y:None
+            height:self.minimum_height
+            padding:"20dp"
+            spacing:"20dp"
 
-MainLayout:
 """
 
 
