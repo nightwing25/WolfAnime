@@ -109,9 +109,11 @@ MainLayout:
         radius: 0, dp(16), dp(16), 0
 
         MDNavigationDrawerMenu:
-            #MDNavigationDrawerHeader:
-
-
+            MDNavigationDrawerHeader:
+                title:"Menu"
+                text:"header text"
+                spacing: "4dp"
+                padding: "12dp", 0, 0, "56dp"
 
             MDNavigationDrawerLabel:    
                 text: "Menu"
@@ -136,9 +138,49 @@ MainLayout:
                 MDNavigationDrawerItemLeadingIcon:
                     icon: "face-man-shimmer"
                 MDNavigationDrawerItemText:
-                    text:"Anime Page"
+                    text:"Anime"
 
             MDNavigationDrawerDivider:
+
+            MDNavigationDrawerItem:
+                #on_release: feature here
+
+                MDNavigationDrawerItemLeadingIcon:
+                    icon: "music"
+                MDNavigationDrawerItemText:
+                    text:"Music"
+
+            MDNavigationDrawerDivider:
+
+
+            MDNavigationDrawerItem:
+                #on_release: feature here
+
+                MDNavigationDrawerItemLeadingIcon:
+                    icon: "instagram"
+                MDNavigationDrawerItemText:
+                    text:"Socials"
+
+            MDNavigationDrawerDivider:
+
+            MDNavigationDrawerItem:
+                #on_release: feature here
+
+                MDNavigationDrawerItemLeadingIcon:
+                    icon: "book-heart-outline"
+                MDNavigationDrawerItemText:
+                    text:"Manga"
+
+            MDNavigationDrawerDivider:
+
+            MDNavigationDrawerItem:
+                #on_release: feature here
+
+                MDNavigationDrawerItemLeadingIcon:
+                    icon: "cog"
+                MDNavigationDrawerItemText:
+                    text:"Settings"
+
 
 <MyCard>:
     elevation:40
