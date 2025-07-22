@@ -5,6 +5,7 @@
 import os
 #from plyer import call
 import requests
+from kivy.metrics import dp
 from bs4 import BeautifulSoup as bs
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import Screen,ScreenManager
@@ -22,6 +23,7 @@ from kivy.clock import Clock
 from kivymd.uix.navigationdrawer import (
     MDNavigationDrawer,MDNavigationDrawerItem, MDNavigationDrawerItemTrailingText
 )
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.navigationdrawer import MDNavigationLayout
 from kivy.uix.videoplayer import VideoPlayer
 from kivy.uix.gridlayout import GridLayout
@@ -34,9 +36,20 @@ from kivymd.uix.textfield import (
     MDTextFieldHelperText,
     MDTextFieldTrailingIcon,
     MDTextFieldMaxLengthText,
-)
+    )
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivy.uix.behaviors import ButtonBehavior
+from kivymd.uix.list import (
+        MDListItem,
+        MDListItemHeadlineText,
+        MDListItemSupportingText,
+        MDListItemTertiaryText,
+        )
+from kivymd.uix.imagelist import (
+    MDSmartTile,
+    MDSmartTileImage,
+    MDSmartTileOverlayContainer,
+)
 from jnius import autoclass, cast
 from android import activity, mActivity
 os.environ['KIVY_WINDOW'] = 'sdl2'
@@ -64,17 +77,6 @@ KV = """
     spacing: "20dp"
     padding: "20dp"
 
-<VidPlay>:#DOESNT REALLY WORK MUCH
-    BoxLayout:
-        VideoPlayer:
-            id: video_player
-            source:""
-            state:"play"
-            option:{"allow_stretch":True}
-
-        MDButton:
-            text:"<--"
-            on_release:app.root.ids.screen_manager.current = "main_page"
 <Naver>
     id: naver_root # if needed in python 
     #md_bg_color: self.theme_cls.backgroundColor
@@ -99,10 +101,10 @@ MainLayout:
         id:screen_manager
         UrlSearch:
             name:"SearchPage"
-        MainPage:
+        Anime_Display_Page:
             name: "main_page"
-        VidPlay:
-            name:"video"
+        Episode_Season_Screen:
+            name:"seasonEP"
 
     MDNavigationDrawer:
         id: nav_drawer
@@ -164,7 +166,9 @@ MainLayout:
             MDNavigationDrawerDivider:
 
             MDNavigationDrawerItem:
-                #on_release: feature here
+                on_release:
+                    nav_drawer.set_state("close")
+                    app.root.ids.screen_manager.current = "seasonEP"
 
                 MDNavigationDrawerItemLeadingIcon:
                     icon: "book-heart-outline"
@@ -181,6 +185,31 @@ MainLayout:
                 MDNavigationDrawerItemText:
                     text:"Settings"
 
+<MySmartTile>:
+    #pos_hint:{"center_x":.5,"center_y":.5}
+    #size_hint:None,None
+    #size:"175dp","175dp"
+    #overlap:True
+
+    #MDSmartTileImage:
+    #    source:root.image_source
+    #    radius:[dp(24),dp(24),0,0]
+
+    #MDSmartTileOverlayContainer:
+    #    md_bg_color:0,0,0,.5
+    #    adaptive_height:True
+    #    padding:"8dp"
+    #    spacing:"8dp"
+    #    radius:[0,0,dp(24),dp(24)]
+
+    #    MDLabel:
+    #        text:root.text
+    #        theme_text_color:"Custom"
+    #        text_color:"white"
+    #        role:"small"
+    
+
+    
 
 <MyCard>:
     elevation:40
@@ -204,6 +233,8 @@ MainLayout:
 
 <UrlSearch>:
     id:UrlPage
+    FitImage:
+        source:"bg.jpg"
     Naver:
     MDTextField:
         id:search
@@ -227,9 +258,28 @@ MainLayout:
         MDTextFieldTrailingIcon:
             icon: "magnify"
 
+<Episode_Season_Screen>:
+    FitImage:
+        source:"bg.jpg"
+    MDLabel:
+        text:"hello world"
+        halign:"center"
+    Naver:
+    ScrollView:
+        pos_hint:{"top":.9}
+        ResponsiveGrid:
+            cols:4
+            id:widget_box
+            size_hint_y:None
+            height:self.minimum_height
+            padding:"20dp"
+            spacing:"20dp"
 
-<MainPage>:
+
+<Anime_Display_Page>:
     id: main
+    FitImage:
+        source:"bg.jpg"
     Naver:
     ScrollView:
         pos_hint:{"top":.9}
@@ -256,11 +306,15 @@ class Naver(MDBoxLayout):
 class UrlSearch(Screen):
     pass
 
-class VidPlay(Screen):#video
+class EpSeason(Screen):#video
     pass
 
 class OtherSearch(MDBoxLayout):
     pass
+
+class Anime_Display_Page(Screen): #layout for searched results 
+    pass
+
 
 class ResponsiveGrid(GridLayout):
     min_card_width = NumericProperty(180)
@@ -274,33 +328,29 @@ class ResponsiveGrid(GridLayout):
         self.cols = max(1, int(Window.width / self.min_card_width))
 
 
-class DrawerLabel(MDBoxLayout):
-    icon = StringProperty()
-    text = StringProperty()
-
-
-class DrawerItem(MDNavigationDrawerItem):
-    icon = StringProperty()
-    text = StringProperty()
-    trailing_text = StringProperty()
-    trailing_text_color = ColorProperty()
-
-    _trailing_text_obj = None
-
-    def on_trailing_text(self, instance, value):
-        self._trailing_text_obj = MDNavigationDrawerItemTrailingText(
-            text=value,
-            theme_text_color="Custom",
-            text_color=self.trailing_text_color,
-        )
-        self.add_widget(self._trailing_text_obj)
-
-    def on_trailing_text_color(self, instance, value):
-        self._trailing_text_obj.text_color = value
-
-class MainPage(Screen): #layout for searched results 
+class Episode_Season_Screen(Screen):
     pass
 
+class Ep_season_list(MDListItem):
+    images = StringProperty()
+    episode = StringProperty()
+    season = StringProperty()
+
+
+
+
+class MySmartTile(MDSmartTile,ButtonBehavior):
+    text = StringProperty()
+    image_source = StringProperty()
+    url = StringProperty()
+
+    def on_press(self):
+        print("hello world")
+        app = MDApp.get_running_app()
+        app.show_season_ep()
+        #give the same functions as card 
+        #from threading import Thread 
+        #Thread(target=self.get_and_open_stream_url,daemon=True).start()
 
 class MyCard(MDCard,ButtonBehavior):
     '''Implements a material card.'''
@@ -309,21 +359,11 @@ class MyCard(MDCard,ButtonBehavior):
     url = StringProperty()
     #season = StringProperty()
     #episode = StringProperty()
+    #set up mycard look in kv file
     
     def on_press(self):
-        #app = MDApp.get_running_app()
-        #if self.url:
-        #    app.open_in_browser(self.url)
-        #else:
-        #    print("no url provided.")
-        from threading import Thread
+        from threading import Thread 
         Thread(target=self.get_and_open_stream_url,daemon=True).start()
-        #play_episode_in_mpv(self.episode_url)
-        #from subprocess import Popen
-        #if self.url:
-        #    Popen(["mpv",self.url])
-        #else:
-        #    print("No Url Provided")
 
 
     def get_and_open_stream_url(self):
@@ -446,6 +486,8 @@ class ManiApp(MDApp):
         mActivity.startActivity(chooser)
 
 
+
+
    # def play_episode_in_mpv(episode_page_url):#ai exammple
    #     headers = {
    #         "User-Agent": "Mozilla/5.0",
@@ -500,11 +542,43 @@ class ManiApp(MDApp):
             #if not image_url or not image_url.startswith("http"):
              #   continue
 
-            card = MyCard(text=title, image_source=image_url,url=anime_url)
-            result_box.add_widget(card)
+            #card = MyCard(text=title, image_source=image_url,url=anime_url)
+            #result_box.add_widget(card)
+            tile = MySmartTile(
+                MDSmartTileImage(
+                    source=image_url,
+                    radius=[dp(24), dp(24), 0, 0],
+                ),
+
+                MDSmartTileOverlayContainer(
+                    MDLabel(
+                        text=title,
+                        theme_text_color="Custom",
+                        text_color="white",
+                        role='small'
+                    ),
+                    md_bg_color=(0, 0, 0, 0.5),
+                    adaptive_height=True,
+                    padding="12dp",
+                    spacing="12dp",
+                    radius=[0, 0, dp(24), dp(24)],
+                ),
+                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                size_hint=(None, None),
+                size=("175dp", "175dp"),
+                overlap=True,
+
+            )
+            result_box.add_widget(tile)
 
         screen_manager.current = "main_page"
 
+    def show_season_ep(self):
+
+        screen_manager = self.root.ids.screen_manager
+        main_page = screen_manager.get_screen("main_page")
+
+        screen_manager.current = "seasonEP"
    # def on_html_success(self, html_text):
    #     soup = bs(html_text, "html.parser")
    #     names = soup.find_all("a", class_="dynamic-name")
