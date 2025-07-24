@@ -54,6 +54,41 @@ from jnius import autoclass, cast
 from android import activity, mActivity
 os.environ['KIVY_WINDOW'] = 'sdl2'
 os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
+from pygame import mixer
+from pygame import mixer
+
+# Starting the mixer
+mixer.init()
+
+# Loading the song
+mixer.music.load('(FREE) LO-FI TYPE BEAT - ＂ONE LOVE＂ [tVcwohev7Aw].ogg')
+
+# Setting the volume
+mixer.music.set_volume(0.1)
+
+# Start playing the song
+mixer.music.play()
+
+# infinite loop
+#while True:
+#
+#    print("Press 'p' to pause, 'r' to resume")
+#    print("Press 'e' to exit the program")
+#    query = input("  ")
+#
+#    if query == 'p':
+#
+#        # Pausing the music
+#        mixer.music.pause()
+#    elif query == 'r':
+#
+#        # Resuming the music
+#        mixer.music.unpause()
+#    elif query == 'e':
+#
+#        # Stop the mixer
+#        mixer.music.stop()
+#        break
 #DO THE ONELINELISTITEM IN NAV DRAWER SETUP
 #CREATE VIDEO AREA AFTER THE EITHER CARD IS PICKED 
 #THEN UNDER VIDEO DISPLAY EPISODES AND SEASONS CLICK EPISODE ADD TO VIDEO TO BE VIEWED
@@ -62,6 +97,7 @@ os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
 #from kivy.clock import Clock
 #play low lofi music playlist 
 #last viewed history
+#add a now playing feature for the music 
 #create a watch together feature may need socket programming 
 
 #for getting anime may need to encode the name and built in capitalize funct
