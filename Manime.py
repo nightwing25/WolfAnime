@@ -60,7 +60,8 @@ os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
 #NEED COMPUTER(MAYBE) TO GET THE VIDEO URL 
 #IF THERES EPISODES OR SEASON I WANT TO DISPLAY THEM ON ANOTHER SCREEN
 #from kivy.clock import Clock
-
+#play low lofi music playlist 
+#last viewed history
 #create a watch together feature may need socket programming 
 
 #for getting anime may need to encode the name and built in capitalize funct
@@ -102,9 +103,15 @@ MainLayout:
         UrlSearch:
             name:"SearchPage"
         Anime_Display_Page:
-            name: "main_page"
+            name:"main_page"
         Episode_Season_Screen:
             name:"seasonEP"
+        Socials:
+            name:"socials_page"
+        Manga:
+            name:"manga_page"
+        Setz:
+            name:"settings_page"
 
     MDNavigationDrawer:
         id: nav_drawer
@@ -144,19 +151,11 @@ MainLayout:
 
             MDNavigationDrawerDivider:
 
-            MDNavigationDrawerItem:
-                #on_release: feature here
-
-                MDNavigationDrawerItemLeadingIcon:
-                    icon: "music"
-                MDNavigationDrawerItemText:
-                    text:"Music"
-
-            MDNavigationDrawerDivider:
-
 
             MDNavigationDrawerItem:
-                #on_release: feature here
+                on_release:
+                    nav_drawer.set_state("close")
+                    app.root.ids.screen_manager.current = "socials_page"
 
                 MDNavigationDrawerItemLeadingIcon:
                     icon: "instagram"
@@ -168,7 +167,7 @@ MainLayout:
             MDNavigationDrawerItem:
                 on_release:
                     nav_drawer.set_state("close")
-                    app.root.ids.screen_manager.current = "seasonEP"
+                    app.root.ids.screen_manager.current = "manga_page"
 
                 MDNavigationDrawerItemLeadingIcon:
                     icon: "book-heart-outline"
@@ -178,12 +177,81 @@ MainLayout:
             MDNavigationDrawerDivider:
 
             MDNavigationDrawerItem:
-                #on_release: feature here
+                on_release:
+                    nav_drawer.set_state("close")
+                    app.root.ids.screen_manager.current = "settings_page"
+
 
                 MDNavigationDrawerItemLeadingIcon:
                     icon: "cog"
                 MDNavigationDrawerItemText:
                     text:"Settings"
+
+
+<Setz>:
+    #set up manga part just like MySmartTile 
+    FitImage:
+        source:"bg.jpg"
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 0.5
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+
+    Naver:
+    MDLabel:
+        text:"settings page"
+        halign:"center"
+
+
+<Socials>:
+    #put music section in socials 
+    #add insta,x,github,soundcloud & youtube
+
+    FitImage:
+        source:"bg.jpg"
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 0.5
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+
+    Naver:
+    MDBoxLayout:
+        adaptive_size:True
+        pos_hint: {'center_x':0.5,'center_y':0.5}
+        orientation:"vertical"
+        MDIconButton:
+            icon:"instagram"
+        MDIconButton:
+            icon:"twitter"
+        MDIconButton:
+            icon:"soundcloud"
+        MDIconButton:
+            icon:"youtube"
+            
+
+<Manga>:
+    #set up manga part just like MySmartTile 
+    FitImage:
+        source:"bg.jpg"
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 0.5
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+
+    Naver:
+    MDLabel:
+        text:"manga page"
+        halign:"center"
+
 
 <MySmartTile>:
     #pos_hint:{"center_x":.5,"center_y":.5}
@@ -327,6 +395,14 @@ class ResponsiveGrid(GridLayout):
     def _adjust_cols(self, *args):
         self.cols = max(1, int(Window.width / self.min_card_width))
 
+class Setz(Screen):
+    pass
+
+class Socials(Screen):
+    pass
+
+class Manga(Screen):
+    pass
 
 class Episode_Season_Screen(Screen):
     pass
