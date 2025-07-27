@@ -50,8 +50,8 @@ from kivymd.uix.imagelist import (
     MDSmartTileImage,
     MDSmartTileOverlayContainer,
 )
-from jnius import autoclass, cast
-from android import activity, mActivity
+#from jnius import autoclass, cast
+#from android import activity, mActivity
 os.environ['KIVY_WINDOW'] = 'sdl2'
 os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
 from pygame import mixer
